@@ -18,7 +18,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   if (!isReady) return null;
 
   const excludePage = ["/signUp", "/signIn"];
-  const excludeFooter = ["/dashboard", "/createBlog"];
+  const excludeFooter = ["/dashboard"];
 
   const showNavbar = !excludePage.includes(location.pathname);
   const showFooter = showNavbar && !excludeFooter.includes(location.pathname);
@@ -28,8 +28,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {showNavbar && (
         <Navbar
           isDashboard={
-            location.pathname.includes("/dashboard") ||
-            location.pathname.includes("/createBlog")
+            location.pathname.includes("/dashboard")
           }
         />
       )}
