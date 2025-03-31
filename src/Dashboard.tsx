@@ -2,13 +2,13 @@ import { useState } from "react";
 import DataTable from "./components/DataTable";
 import { AuthProps } from "./types";
 import { CiCirclePlus } from "react-icons/ci";
+import { RxCross2 } from "react-icons/rx";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
 
 const Dashboard: React.FC<AuthProps> = ({ users, setUsers }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [addModal, setAddModal] = useState(false);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [addModal, setAddModal] = useState<boolean>(false);
 
   const addUser = (username: string, password: string) => {
     const foundUser = users.find((user) => user.username === username);
@@ -67,9 +67,12 @@ const Dashboard: React.FC<AuthProps> = ({ users, setUsers }) => {
       )}
       {addModal ? (
         <>
-          <div className="w-full flex items-center justify-center">
-            <div className="flex flex-col items-center justify-between w-screen h-screen flex items-center justify-center poppins-regular">
-              <div className="flex flex-col items-center justify-center border border-slate-300 shadow-lg shadow-slate-500 rounded-md p-10 gap-10">
+          <div className="relative w-full flex items-center justify-center">
+            <div className="relative inset-0 top-20 flex flex-col items-center justify-between w-screen h-screen poppins-regular">
+              <div className="relative bg-white flex flex-col items-center justify-center border border-slate-300 shadow-lg shadow-slate-500 rounded-md p-10 gap-5">
+                <div className="w-full flex items-center justify-end">
+                  <RxCross2 className="w-5 h-5 cursor-pointer hover:text-red-500 duration-300" onClick={() => setAddModal(false)} />
+                </div>
                 <p className="font-bold text-2xl w-full flex items-center justify-center">
                   Add User
                 </p>
@@ -104,22 +107,14 @@ const Dashboard: React.FC<AuthProps> = ({ users, setUsers }) => {
                   </div>
                 </div>
 
-                {/* Sign Up Button */}
-                <div className="w-full flex items-center justify-center border-b pb-8">
+                {/* Add User Button */}
+                <div className="w-full flex items-center justify-center">
                   <button
                     className="bg-yellow-500 border border-yellow-500 w-full py-2 rounded-md cursor-pointer hover:bg-white duration-300"
                     onClick={() => addUser(username, password)}
                   >
                     Add User
                   </button>
-                </div>
-
-                {/* Sign In Link */}
-                <div className="flex items-center gap-2">
-                  <i>Already have an account?</i>
-                  <Link to="/signIn" className="text-yellow-500">
-                    Sign In
-                  </Link>
                 </div>
               </div>
             </div>

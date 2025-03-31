@@ -12,11 +12,11 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 
 const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
-  const [newUsername, setNewUsername] = useState("");
-  const [handleUser, setHandleUser] = useState("");
+  const [newUsername, setNewUsername] = useState<string>("");
+  const [handleUser, setHandleUser] = useState<string>("");
 
   // Delete User
-  const handleDeleteUser = (username: String) => {
+  const handleDeleteUser = (username: string) => {
     const findUser = users.find((a) => a.username === username);
     if(findUser){
       Swal.fire({

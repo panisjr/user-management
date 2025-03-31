@@ -6,8 +6,8 @@ import { AuthProps } from "./types";
 
 
 const SignUp: React.FC<AuthProps> = ({ users, setUsers }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleSignUp = (username: string, password: string) => {
     const foundUser = users.find((user) => user.username === username);

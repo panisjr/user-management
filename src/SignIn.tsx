@@ -5,11 +5,11 @@ import Swal from "sweetalert2";
 import { AuthProps } from "./types";
 
 const SignIn: React.FC<AuthProps> = ({ users }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const router = useNavigate();
 
-  const handleSignIn = (username: String, password: String) => {
+  const handleSignIn = (username: string, password: string) => {
     const foundUser = users.find((user) => user.username === username);
 
     if (!foundUser) {
