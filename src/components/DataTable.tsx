@@ -1,9 +1,9 @@
 import { AuthProps, User } from "../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { RxCross2 } from "react-icons/rx";
 import { CiEdit, CiTrash } from "react-icons/ci";
-import { GoPencil } from "react-icons/go";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
 const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
   const [viewModal, setViewModal] = useState<boolean>(false);
@@ -13,6 +13,10 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
   const [date, setDate] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editingEmail, setEditingEmail] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<"ascending" | "descending">(
+    "ascending"
+  );
+  const [sortedColumn, setSortedColumn] = useState<string | null>(null);
 
   // Delete User
   const handleDeleteUser = () => {
@@ -128,54 +132,137 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
       );
     }
   };
+
+  //  Sorting
+  const sortedBy = (column: string) => {
+    let newSortOrder: "ascending" | "descending" = "ascending";
+
+    if (sortedColumn === column && sortOrder === "ascending") {
+      newSortOrder = "descending";
+    }
+
+    const sortedUsers = [...users].sort((a, b) => {
+      if (column === "firstname") {
+        return newSortOrder === "ascending"
+          ? a.firstname?.localeCompare(b.firstname || "") || 0
+          : b.firstname?.localeCompare(a.firstname || "") || 0;
+      } else if (column === "lastname") {
+        return newSortOrder === "ascending"
+          ? a.lastname?.localeCompare(b.lastname || "") || 0
+          : b.lastname?.localeCompare(a.lastname || "") || 0;
+      } else if (column === "email") {
+        return newSortOrder === "ascending"
+          ? a.email.localeCompare(b.email)
+          : b.email.localeCompare(a.email);
+      } else if (column === "date") {
+        return newSortOrder === "ascending"
+          ? a.date.localeCompare(b.date)
+          : b.date.localeCompare(a.date);
+      }
+      return 0;
+    });
+
+    setUsers(sortedUsers);
+    setSortOrder(newSortOrder);
+    setSortedColumn(column);
+  };
+
+  useEffect(() => setFilteredItems(users));
+
   return (
-    <div className="p-4 poppins-regular px-52 poppins-regular">
-      <input
-        className="h-8 p-3 text-sm peer border border-gray-300 rounded-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-400 mb-2"
-        value={searchTerm}
-        onChange={(e) => searchItems(e.target.value)}
-        placeholder="Search todo..."
-      />
+    <div className="poppins-regular px-52 poppins-regular">
+      <div className="flex items-center gap-3">
+        <input
+          className="h-8 p-3 text-sm peer border border-gray-300 rounded-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-400 mb-2"
+          value={searchTerm}
+          onChange={(e) => searchItems(e.target.value)}
+          placeholder="Search user..."
+        />
+        {filteredItems.length === 0 && (
+          <>
+            <div>
+              <i>No results found</i>
+            </div>
+          </>
+        )}
+      </div>
+
       <table className="table-fixed w-full">
         <thead>
           <tr>
-            <th className="border border-black bg-gray-800 text-white">
-              First Name
+            <th
+              className="border border-black bg-gray-800 text-white cursor-pointer p-2"
+              onClick={() => sortedBy("firstname")}
+            >
+              <span className="flex items-center justify-center">
+                First Name
+                {sortOrder === "ascending" ? (
+                  <IoMdArrowDropdown className="w-6 h-6" />
+                ) : (
+                  <IoMdArrowDropup className="w-6 h-6" />
+                )}
+              </span>
             </th>
-            <th className="border border-black bg-gray-800 text-white">
-              Last Name
+            <th
+              className="border border-black bg-gray-800 text-white cursor-pointer p-2"
+              onClick={() => sortedBy("lastname")}
+            >
+              <span className="flex items-center justify-center">
+                Last Name
+                {sortOrder === "ascending" ? (
+                  <IoMdArrowDropdown className="w-6 h-6" />
+                ) : (
+                  <IoMdArrowDropup className="w-6 h-6" />
+                )}
+              </span>
             </th>
-            <th className="border border-black bg-gray-800 text-white">
-              Email
+            <th
+              className="border border-black bg-gray-800 text-white cursor-pointer p-2"
+              onClick={() => sortedBy("email")}
+            >
+              <span className="flex items-center justify-center">
+                Email
+                {sortOrder === "ascending" ? (
+                  <IoMdArrowDropdown className="w-6 h-6" />
+                ) : (
+                  <IoMdArrowDropup className="w-6 h-6" />
+                )}
+              </span>
             </th>
-            <th className="border border-black bg-gray-800 text-white">
-              Date Created
+            <th
+              className="border border-black bg-gray-800 text-white cursor-pointer p-2"
+              onClick={() => sortedBy("date")}
+            >
+              <span className="flex items-center justify-center">
+                Date Created
+                {sortedColumn === "date" &&
+                  (sortOrder === "ascending" ? (
+                    <IoMdArrowDropdown className="w-6 h-6" />
+                  ) : (
+                    <IoMdArrowDropup className="w-6 h-6" />
+                  ))}
+              </span>
             </th>
           </tr>
         </thead>
         <tbody>
-          {filteredItems.length > 0 ? (
+          {filteredItems.length > 0 &&
             filteredItems.map((item, index) => {
               // if (item.userID === userID) {
               return (
                 <tr
                   key={index}
-                  className="even:bg-gray-300 cursor-pointer hover:bg-black/30"
+                  className="even:bg-gray-300 cursor-pointer hover:bg-black/20"
                   onClick={() => viewUser(item.email)}
                 >
-                  <td className="border text-center">{item.firstname}</td>
-                  <td className="border text-center">{item.lastname}</td>
-                  <td className="border text-center">{item.email}</td>
-                  <td className="border text-center">{item.date}</td>
+                  <td className="border text-center p-2">{item.firstname}</td>
+                  <td className="border text-center p-2">{item.lastname}</td>
+                  <td className="border text-center p-2">{item.email}</td>
+                  <td className="border text-center p-2">{item.date}</td>
                 </tr>
               );
               // }
-            })
-          ) : (
-            <tr className="even:bg-gray-300 cursor-pointer hover:bg-black/30">
-              <i>No results found</i>
-            </tr>
-          )}
+            })}
         </tbody>
       </table>
 
