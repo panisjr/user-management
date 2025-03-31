@@ -196,11 +196,12 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
             >
               <span className="flex items-center justify-center">
                 First Name
-                {sortOrder === "ascending" ? (
-                  <IoMdArrowDropdown className="w-6 h-6" />
-                ) : (
-                  <IoMdArrowDropup className="w-6 h-6" />
-                )}
+                {sortedColumn === "firstname" &&
+                  (sortOrder === "ascending" ? (
+                    <IoMdArrowDropdown className="w-6 h-6" />
+                  ) : (
+                    <IoMdArrowDropup className="w-6 h-6" />
+                  ))}
               </span>
             </th>
             <th
@@ -209,11 +210,12 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
             >
               <span className="flex items-center justify-center">
                 Last Name
-                {sortOrder === "ascending" ? (
-                  <IoMdArrowDropdown className="w-6 h-6" />
-                ) : (
-                  <IoMdArrowDropup className="w-6 h-6" />
-                )}
+                {sortedColumn === "lastname" &&
+                  (sortOrder === "ascending" ? (
+                    <IoMdArrowDropdown className="w-6 h-6" />
+                  ) : (
+                    <IoMdArrowDropup className="w-6 h-6" />
+                  ))}
               </span>
             </th>
             <th
@@ -222,11 +224,12 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
             >
               <span className="flex items-center justify-center">
                 Email
-                {sortOrder === "ascending" ? (
-                  <IoMdArrowDropdown className="w-6 h-6" />
-                ) : (
-                  <IoMdArrowDropup className="w-6 h-6" />
-                )}
+                {sortedColumn === "email" &&
+                  (sortOrder === "ascending" ? (
+                    <IoMdArrowDropdown className="w-6 h-6" />
+                  ) : (
+                    <IoMdArrowDropup className="w-6 h-6" />
+                  ))}
               </span>
             </th>
             <th
