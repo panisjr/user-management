@@ -6,13 +6,52 @@ import SignUp from "./SignUp";
 import Dashboard from "./Dashboard";
 import { useState } from "react";
 import { User } from "./types";
-// const dummyUsers: User[] = [
-//   { username: "john_doe", password: "12345", date: "2024-03-30" },
-//   { username: "jane_smith", password: "abcdef", date: "2024-03-29" },
-//   { username: "ramz_dev", password: "devpassword", date: "2024-03-28" },
-// ];
+const dummyUsers: User[] = [
+  {
+    firstname: "ramskie",
+    lastname: "panis",
+    email: "john_doe@gmail.com",
+    password: "12345",
+    date: "2024-03-30",
+  },
+  {
+    firstname: "ramskie",
+    lastname: "panis",
+    email: "jane_smith#gmail.com",
+    password: "abcdef",
+    date: "2024-03-29",
+  },
+  {
+    firstname: "ramskie",
+    lastname: "panis",
+    email: "ramz_dev@gmail.com",
+    password: "devpassword",
+    date: "2024-03-28",
+  },
+  {
+    firstname: "ramskie",
+    lastname: "panis",
+    email: "ramz_dev@gmail.com",
+    password: "devpassword",
+    date: "2024-03-28",
+  },
+  {
+    firstname: "ramskie",
+    lastname: "panis",
+    email: "ramz_dev@gmail.com",
+    password: "devpassword",
+    date: "2024-03-28",
+  },
+  {
+    firstname: "ramskie",
+    lastname: "panis",
+    email: "ramz_dev@gmail.com",
+    password: "devpassword",
+    date: "2024-03-28",
+  },
+];
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>(dummyUsers);
 
   return (
     <Router>

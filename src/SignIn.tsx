@@ -5,12 +5,12 @@ import Swal from "sweetalert2";
 import { AuthProps } from "./types";
 
 const SignIn: React.FC<AuthProps> = ({ users }) => {
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const router = useNavigate();
 
-  const handleSignIn = (username: string, password: string) => {
-    const foundUser = users.find((user) => user.username === username);
+  const handleSignIn = (email: string, password: string) => {
+    const foundUser = users.find((user) => user.email === email);
 
     if (!foundUser) {
       Swal.fire({
@@ -18,11 +18,11 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
         title: "Signing In!",
         text: "Can't find your account, make sure you fill the fields correctly.",
       });
-    } else if (username === "") {
+    } else if (email === "") {
       Swal.fire({
         icon: "error",
         title: "Signing In!",
-        text: "Username field is empty.",
+        text: "Email field is empty.",
       });
     } else if (password === "") {
       Swal.fire({
@@ -31,18 +31,18 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
         text: "Password field is empty.",
       });
     } else if (
-      foundUser?.username != username ||
+      foundUser?.email != email ||
       foundUser?.password != password
     ) {
       Swal.fire({
         icon: "error",
         title: "Signing In!",
-        text: "Your Username or Password is incorrect.",
+        text: "Your Email or Password is incorrect.",
       });
     }
-    if (foundUser?.username === username && foundUser?.password === password) {
+    if (foundUser?.email === email && foundUser?.password === password) {
       router("/dashboard");
-      setUsername("");
+      setEmail("");
       setPassword("");
     }
   };
@@ -61,21 +61,19 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
         {/* Input Fields */}
         <div className="flex flex-col items-center gap-5">
           <div className="flex items-center gap-3">
-            <FiUser className="w-6 h-6" />
             <div className="border-b px-3 py-2 flex items-center gap-3">
               <input
-                type="text"
-                name="username"
-                id="username"
+                type="email"
+                name="email"
+                id="email"
                 className="outline-none"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <FiLock className="w-6 h-6" />
             <div className="border-b px-3 py-2 flex items-center gap-3">
               <input
                 type="password"
@@ -94,7 +92,7 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
         <div className="w-full flex items-center justify-center border-b pb-8">
           <button
             className="flex items-center justify-center bg-yellow-500 border border-yellow-500 w-full py-2 rounded-md cursor-pointer hover:bg-white duration-300"
-            onClick={() => handleSignIn(username, password)}
+            onClick={() => handleSignIn(email, password)}
           >
             Sign In
           </button>
