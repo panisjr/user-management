@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { RxCross2 } from "react-icons/rx";
 import { CiEdit, CiTrash } from "react-icons/ci";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import { useUser } from "../UserHook";
 
 const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
   const [viewModal, setViewModal] = useState<boolean>(false);
@@ -18,6 +19,8 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
   );
   const [sortedColumn, setSortedColumn] = useState<string | null>(null);
 
+  // Displaying data specific for current user
+  const {currentUser} = useUser();
   // Delete User
   const handleDeleteUser = () => {
     const findUser = users.find((a) => a.email === email);
@@ -257,18 +260,22 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
         </thead>
         <tbody>
           {filteredItems.length > 0 &&
-            filteredItems.map((item, index) => (
-              <tr
-                key={index}
-                className="even:bg-gray-300 cursor-pointer hover:bg-black/20"
-                onClick={() => item.email && viewUser(item.email)}
-              >
-                <td className="border text-center p-2">{item.firstname}</td>
-                <td className="border text-center p-2">{item.lastname}</td>
-                <td className="border text-center p-2">{item.email}</td>
-                <td className="border text-center p-2">{item.date}</td>
-              </tr>
-            ))}
+            filteredItems.map((item, index) => {
+              if (item.currentUserEmail === currentUser?.email) {
+                return (
+                  <tr
+                    key={index}
+                    className="even:bg-gray-300 cursor-pointer hover:bg-black/20"
+                    onClick={() => item.email && viewUser(item.email)}
+                  >
+                    <td className="border text-center p-2">{item.firstname}</td>
+                    <td className="border text-center p-2">{item.lastname}</td>
+                    <td className="border text-center p-2">{item.email}</td>
+                    <td className="border text-center p-2">{item.date}</td>
+                  </tr>
+                );
+              }
+            })}
         </tbody>
       </table>
 
@@ -359,7 +366,8 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
                       type="button"
                       className="bg-red-500 border border-red-500 px-4 py-2 text-white rounded-md cursor-pointer hover:bg-white hover:border-red-500 hover:text-red-500 duration-300"
                       onClick={() => {
-                        closeAddModal(), setIsEditing(!isEditing);
+                        closeAddModal();
+                        setIsEditing(!isEditing);
                       }}
                     >
                       Cancel

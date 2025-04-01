@@ -4,6 +4,7 @@ import { AuthProps } from "./types";
 import { CiCirclePlus } from "react-icons/ci";
 import { RxCross2 } from "react-icons/rx";
 import Swal from "sweetalert2";
+import { useUser } from "./UserHook";
 
 const Dashboard: React.FC<AuthProps> = ({ users, setUsers }) => {
   const [firstname, setFirstname] = useState<string>("");
@@ -12,10 +13,12 @@ const Dashboard: React.FC<AuthProps> = ({ users, setUsers }) => {
   const [password, setPassword] = useState<string>("");
   const [addModal, setAddModal] = useState<boolean>(false);
 
+  // Get current user for assigning specific created data
+  const { currentUser } = useUser();
+
   const addUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const foundUser = users.find((user) => user.email === email);
-
     if (foundUser) {
       Swal.fire({
         icon: "error",
@@ -42,6 +45,7 @@ const Dashboard: React.FC<AuthProps> = ({ users, setUsers }) => {
       setUsers([
         ...users,
         {
+          currentUserEmail: currentUser?.email,
           email,
           firstname,
           lastname,

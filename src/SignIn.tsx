@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Use React Router for navigation
 import Swal from "sweetalert2";
-import { AuthProps } from "./types";
+import { AuthProps} from "./types";
+import { useUser } from "./UserHook";
 
 const SignIn: React.FC<AuthProps> = ({ users }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const router = useNavigate();
 
+  // Getting the current logged in user
+  const { setCurrentUser } = useUser();
+
   const handleSignIn = (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
     const foundUser = users.find((user) => user.email === email);
-
     if (!foundUser) {
       Swal.fire({
         icon: "error",
@@ -38,6 +41,7 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
       });
     }
     if (foundUser?.email === email && foundUser?.password === password) {
+      setCurrentUser(foundUser);
       router("/dashboard");
       setEmail("");
       setPassword("");

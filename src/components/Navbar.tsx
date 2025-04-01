@@ -1,10 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../UserHook";
 interface NavbarProps {
   isDashboard: boolean;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ isDashboard }) => {
+  const { currentUser } = useUser();
+  const router = useNavigate();
+  const logout = () => {
+    router("/");
+  };
   return (
     <>
       {!isDashboard ? (
@@ -25,7 +31,9 @@ const Navbar: React.FC<NavbarProps> = ({ isDashboard }) => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Link to={'/signIn'} className="cursor-pointer">Sign In</Link>
+              <Link to={"/signIn"} className="cursor-pointer">
+                Sign In
+              </Link>
               <Link
                 to={"/signUp"}
                 className="bg-slate-900 p-3 rounded-md text-white cursor-pointer border border-slate-900 hover:bg-white hover:text-slate-900 duration-300"
@@ -52,7 +60,13 @@ const Navbar: React.FC<NavbarProps> = ({ isDashboard }) => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <img src="/images/profile.jpg" alt="Profile Picture" className="w-10 h-10 object-cover rounded-[100%] cursor-pointer" />
+              <p>Welcome, {currentUser?.firstname || "Guest"} !</p>
+              <img
+                src="/images/profile.jpg"
+                alt="Profile Picture"
+                className="w-10 h-10 object-cover rounded-[100%] cursor-pointer"
+                onClick={() => logout()}
+              />
             </div>
           </div>
         </>
