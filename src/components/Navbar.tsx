@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../UserHook";
+import Swal from "sweetalert2";
 interface NavbarProps {
   isDashboard: boolean;
 }
@@ -9,7 +10,19 @@ const Navbar: React.FC<NavbarProps> = ({ isDashboard }) => {
   const { currentUser } = useUser();
   const router = useNavigate();
   const logout = () => {
-    router("/");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, logout!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router("/");
+      }
+    });
   };
   return (
     <>
