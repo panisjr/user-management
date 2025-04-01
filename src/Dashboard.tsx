@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DataTable from "./components/DataTable";
-import { AuthProps} from "./types";
-import { CiCirclePlus} from "react-icons/ci";
+import { AuthProps } from "./types";
+import { CiCirclePlus } from "react-icons/ci";
 import { RxCross2 } from "react-icons/rx";
 import Swal from "sweetalert2";
 
@@ -11,6 +11,7 @@ const Dashboard: React.FC<AuthProps> = ({ users, setUsers }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [addModal, setAddModal] = useState<boolean>(false);
+
   const addUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const foundUser = users.find((user) => user.email === email);
@@ -45,7 +46,11 @@ const Dashboard: React.FC<AuthProps> = ({ users, setUsers }) => {
           firstname,
           lastname,
           password,
-          date: new Date().toISOString(),
+          date: new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+          }),
         },
       ]);
       setFirstname("");
@@ -74,8 +79,7 @@ const Dashboard: React.FC<AuthProps> = ({ users, setUsers }) => {
           <CiCirclePlus className="w-6 h-6" />
         </button>
       </div>
-   
-    
+
       {users ? (
         <>
           <DataTable users={users} setUsers={setUsers} />

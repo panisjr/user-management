@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { FiUser, FiLock } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom"; // Use React Router for navigation
 import Swal from "sweetalert2";
 import { AuthProps } from "./types";
@@ -9,7 +8,8 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
   const [password, setPassword] = useState<string>("");
   const router = useNavigate();
 
-  const handleSignIn = (email: string, password: string) => {
+  const handleSignIn = (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault();
     const foundUser = users.find((user) => user.email === email);
 
     if (!foundUser) {
@@ -30,10 +30,7 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
         title: "Signing In!",
         text: "Password field is empty.",
       });
-    } else if (
-      foundUser?.email != email ||
-      foundUser?.password != password
-    ) {
+    } else if (foundUser?.email != email || foundUser?.password != password) {
       Swal.fire({
         icon: "error",
         title: "Signing In!",
@@ -48,7 +45,10 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
   };
   return (
     <div className="w-screen h-screen flex items-center justify-center poppins-regular">
-      <div className="flex flex-col items-center justify-center border border-slate-300 shadow-lg shadow-slate-500 rounded-md p-10 gap-10">
+      <form
+        onSubmit={handleSignIn}
+        className="flex flex-col items-center justify-center border border-slate-300 shadow-lg shadow-slate-500 rounded-md p-10 gap-10"
+      >
         {/* Logo */}
         <div className="flex items-start w-full">
           <Link to="/" className="flex items-center gap-3">
@@ -91,8 +91,8 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
         {/* Sign In Button */}
         <div className="w-full flex items-center justify-center border-b pb-8">
           <button
+            type="submit"
             className="flex items-center justify-center bg-yellow-500 border border-yellow-500 w-full py-2 rounded-md cursor-pointer hover:bg-white duration-300"
-            onClick={() => handleSignIn(email, password)}
           >
             Sign In
           </button>
@@ -105,7 +105,7 @@ const SignIn: React.FC<AuthProps> = ({ users }) => {
             Sign Up
           </Link>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

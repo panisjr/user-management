@@ -103,10 +103,17 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
       setFirstname(findUser.firstname ?? "");
       setLastname(findUser.lastname ?? "");
       setEmail(findUser.email);
-      setDate(findUser.date);
+      setDate(
+        new Date(findUser.date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        })
+      );
       setEditingEmail(findUser.email);
     }
   };
+
   // Close View User Modal
   const closeAddModal = () => {
     setViewModal(false);
@@ -167,7 +174,7 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
     setSortedColumn(column);
   };
 
-  useEffect(() => setFilteredItems(users));
+  useEffect(() => setFilteredItems(users), [users]);
 
   return (
     <div className="poppins-regular px-52 poppins-regular">
@@ -250,22 +257,18 @@ const DataTable: React.FC<AuthProps> = ({ users, setUsers }) => {
         </thead>
         <tbody>
           {filteredItems.length > 0 &&
-            filteredItems.map((item, index) => {
-              // if (item.userID === userID) {
-              return (
-                <tr
-                  key={index}
-                  className="even:bg-gray-300 cursor-pointer hover:bg-black/20"
-                  onClick={() => viewUser(item.email)}
-                >
-                  <td className="border text-center p-2">{item.firstname}</td>
-                  <td className="border text-center p-2">{item.lastname}</td>
-                  <td className="border text-center p-2">{item.email}</td>
-                  <td className="border text-center p-2">{item.date}</td>
-                </tr>
-              );
-              // }
-            })}
+            filteredItems.map((item, index) => (
+              <tr
+                key={index}
+                className="even:bg-gray-300 cursor-pointer hover:bg-black/20"
+                onClick={() => item.email && viewUser(item.email)}
+              >
+                <td className="border text-center p-2">{item.firstname}</td>
+                <td className="border text-center p-2">{item.lastname}</td>
+                <td className="border text-center p-2">{item.email}</td>
+                <td className="border text-center p-2">{item.date}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
 

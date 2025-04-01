@@ -43,7 +43,11 @@ const SignUp: React.FC<AuthProps> = ({ users, setUsers }) => {
           firstname,
           lastname,
           password,
-          date: new Date().toISOString(),
+          date: new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+          }),
         },
       ]);
       setFirstname("");
@@ -87,7 +91,7 @@ const SignUp: React.FC<AuthProps> = ({ users, setUsers }) => {
                     value={firstname}
                     onChange={(e) => setFirstname(e.target.value)}
                     required
-                  autoComplete="off"
+                    autoComplete="off"
                   />
                 </div>
               </div>
@@ -103,7 +107,7 @@ const SignUp: React.FC<AuthProps> = ({ users, setUsers }) => {
                     value={lastname}
                     onChange={(e) => setLastname(e.target.value)}
                     required
-                  autoComplete="off"
+                    autoComplete="off"
                   />
                 </div>
               </div>
